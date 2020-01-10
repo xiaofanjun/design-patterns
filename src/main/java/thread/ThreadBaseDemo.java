@@ -15,14 +15,17 @@ import java.util.concurrent.locks.ReentrantLock;
  * 3：进程与线程区别：进程是指在操作系统中正在运行的一个应用程序；线程是指进程内独立执行某个任务的一个单元；一个进程中可以包含多个线程。
  * <p>
  * 4：synchronized和Lock的区别：
- * &nbsp;(1)：synchronized是Java内置的关键字，在jvm层面，Lock是Java接口;
- * &nbsp;(2)：synchronized无法判断是否获取到锁，Lock可以；{@link ThreadBase4}
- * &nbsp;(3)：synchronized可以自动释放锁，Lock需要在finally中手动释放锁（容易造成死锁）；{@link ThreadBase4}
- * &nbsp;(4)：synchronized当有线程等待时，会一直等，而Lock可以不用等，直接结束(使用tryLock())。{@link ThreadBase4}
- * &nbsp;(5): synchronized的锁可重入，不可中断，非公平，而Lock可重入，可中断，可公平。
- * &nbsp;(6): Lock锁适合大量同步的代码同步问题，synchronized适合少量的。
+ * &nbsp; (1)：synchronized是Java内置的关键字，在jvm层面，Lock是Java接口;
+ * &nbsp; (2)：synchronized无法判断是否获取到锁，Lock可以；{@link ThreadBase4}
+ * &nbsp; (3)：synchronized可以自动释放锁，Lock需要在finally中手动释放锁（容易造成死锁）；{@link ThreadBase4}
+ * &nbsp; (4)：synchronized当有线程等待时，会一直等，而Lock可以不用等，直接结束(使用tryLock())。{@link ThreadBase4}
+ * &nbsp; (5): synchronized的锁可重入，不可中断，非公平，而Lock可重入，可中断，可公平。
+ * &nbsp; (6): Lock锁适合大量同步的代码同步问题，synchronized适合少量的。
  * <p>
  * 5: sleep()和wait()的区别:
+ * &nbsp; (1): sleep() 来源于Thread,wait() 来源于Object;
+ * &nbsp; (2): sleep() 没有释放锁，wait() 方法释放了锁;
+ * &nbsp; (3): sleep() 作用是让线程休眠一定的时间，当休眠时间过后，进行排队，等待cpu执行，wait() 只有调用了 notify()|notifyAll() 后才会被激活;
  * <p>
  * 6: 如何模拟一个死锁：
  * <p>
@@ -190,3 +193,4 @@ class ThreadBase4 implements Runnable {
         }
     }
 }
+
