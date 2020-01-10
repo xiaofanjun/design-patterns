@@ -15,7 +15,7 @@ package thread;
  * 使用： 对于使用来说，如果要是锁的是只是同一个对象的话，那么就需要用对象锁，然后判断是要锁住一个方法中的一段代码块，还是是整个
  * 方法需要上锁；反之，看类锁是否满足需求；具体使用，应根据具体的业务需求来选取。
  */
-public class ThreadDemo {
+public class SynchronizedDemo {
 }
 
 /**
