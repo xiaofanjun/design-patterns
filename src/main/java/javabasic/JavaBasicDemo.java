@@ -92,9 +92,13 @@ import java.io.InputStream;
  * <p>
  * <p>
  * 15: BIO,NIO,AIO 有什么区别 ? <br/>
- * BIO: Block IO 同步阻塞式 IO , 就是我们平常使用过的传统IO，优点: 简单使用方便; 缺点: 并发处理能力低 ; <br/>
+ * BIO: Block IO 同步阻塞式 IO , 就是我们平常使用过的传统IO，优点: 简单使用方便; 缺点: 并发处理能力低 ;<br/>
+ * &nbsp;比如以前的ServerSocket 就是基于这种方式的,在高并发场景下不适用。<br/>
+ * &nbsp;y一个连接一个线程 ; Client如果有连接请求时，Server就需要有起一个线程来处理,如果连接不做啥事也会起着。<br/>
  * NIO: New IO 同步非阻塞 IO , 是传统IO(BIO) 的升级版，Client和Server 通过 Channel(通道) 通讯，实现了多路复用 ;<br/>
+ * &nbsp;服务器实现模式为一个请求一个线程，即客户端发送的连接请求都会注册到多路复用器上，多路复用器轮询到连接有I/O请求时才启动一个线程进行处理;<br/>
  * AIO: Asynchronous IO 是NIO的升级版， 也叫 NIO2，实现了 异步非堵塞IO，异步IO的操作基于事件和回调机制 ;<br/>
+ * &nbsp;服务器实现模式为一个有效请求一个线程，客户端的I/O请求都是由OS先完成了再通知服务器应用去启动线程进行处理<br/>
  *
  * @author xfj
  */
