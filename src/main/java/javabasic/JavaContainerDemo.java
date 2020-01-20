@@ -12,7 +12,7 @@ import java.util.*;
  * &nbsp;&nbsp; List(接口) {@link java.util.List} --->(实现类) ArrayList{@link java.util.ArrayList},LinkedList{@link java.util.LinkedList}，Vector(类){@link java.util.Vector} --->(子类),Stack{@link java.util.Stack}  <br/>
  * &nbsp;&nbsp; Set(接口){@link java.util.Set}    --->(实现类) HashSet{@link java.util.HashSet},LinkedHashSet{@link java.util.LinkedHashSet},TreeSet{@link java.util.LinkedHashSet}<br/>
  * &nbsp; Map（接口）{@link java.util.Map} ,实现类如下: <br/>
- * &nbsp;&nbsp; HashMap{@link java.util.HashMap} --->(实现类) LinkedHashMap{@link java.util.LinkedHashMap} <br/>
+ * &nbsp;&nbsp; HashMap{@link java.util.HashMap} --->(继承类) LinkedHashMap{@link java.util.LinkedHashMap} <br/>
  * &nbsp;&nbsp; TreeMap{@link java.util.TreeMap} <br/>
  * &nbsp;&nbsp; ConcurrentHashMap{@link java.util.concurrent.ConcurrentHashMap} <br/>
  * &nbsp;&nbsp; Hashtable{@link java.util.Hashtable} <br/>
@@ -31,8 +31,22 @@ import java.util.*;
  * <p>
  * <p>
  * 4: HashMap 和 HashTable 区别 ? <br/>
- *
- *
+ * (1) 从代码架构上说: <br/>
+ * HashMap{@link HashMap} 继承自 AbstractMap{@link AbstractMap} ，而 HashTable{@link Hashtable} 继承自Dictionary{@link Dictionary} 类;不过都实现了 Map,Cloneable(可复制),Serializable(可序列化) 这三个接口。<br/>
+ * (2) 从功能方面说: <br/>
+ * HashMap 中的 key-value 支持 key-value , null-null , key-null, null-value 四种形式, 而HashTable 只支持 key-value 这一种形式.<br/>
+ * 所以说: 当判断HashMap 中某个key是否存在时，不能使用 get() 方法取判断，因为当你的key=null时，返回的也是null，所以应该使用containsKey() 方法去判断.<br/>
+ * (3) 从线程安全说: <br/>
+ * HashMap : 非线程安全(没有被synchronized) , HashTable : 线程安全(方法几乎被synchronized修饰)<br/>
+ * 但是如果需要HashMap 是线程安全是怎么处理呢? <br/>
+ * &nbsp;（3.1）可以使用 Collections.synchronizedMap(hashMap){@link Collections#synchronizedMap(java.util.Map)} 来进行处理 .<br/>
+ * &nbsp; (3.2) 也可以使用ConcurrentHashMap{@link java.util.concurrent.ConcurrentHashMap} , 它比HashTable 效率高好多倍，因为该类使用的是分段锁，并不对整个数据进行锁定。<br/>
+ * <b>总结: 对于HashMap 和 HashTable 的使用，应尽量使用HashMap，因为无论是否需要线程安全（需要线程安全时可以使用上面两种方式保持），HashMap都要 比 HashTable 效率高</b>
+ * (4) 从容量初始化说: <br/>
+ * 初始化容量，每次扩容大小 两个都不一样: HashMap 默认初始化 = 16 ，之后每次扩容为原来的 2 倍 ; HashTable 默认初始化 = 11 ，之后每次扩容为原来的 2n+1;<br/>
+ * 计算hash值不一样: {@link JavaContainerDemo4_4}<br/>
+ * HashMap :  为了得到元素的位置，首先需要根据元素的key计算出一个 hash 值，然后再用这个 hash 值来计算得到最终位置 {@link JavaContainerDemo4_4#show1()}<br/>
+ * HashTable: 直接使用对象的 hashCode，hashCode 是 JDK 根据对象的地址或者字符串或者数字计算出来的 int 类型的数值，然后再使用保留余数获取最终的位置.{@link JavaContainerDemo4_4#show2()}<br/>
  */
 public class JavaContainerDemo {
 }
@@ -98,5 +112,49 @@ class JavaContainerDemo3 {
         JavaContainerDemo3 demo3 = new JavaContainerDemo3();
         demo3.show1();
         demo3.show2();
+    }
+}
+
+class JavaContainerDemo4_4 {
+    /**
+     * 展示 HashMap 计算 hash 值的方式
+     * <p>
+     * 为了得到元素的位置，首先需要根据元素的key计算出一个 hash 值，然后再用这个 hash 值来计算得到最终位置
+     * <p>
+     * HashMap 中的 hash方法{@link HashMap#hash(java.lang.Object)} 逻辑如下:
+     * int h;
+     * return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+     * 可以看出 当key为null时，hash = 0 ;
+     * 否则 hash = (h = key.hashCode()) ^ (h >>> 16);
+     * 这里对 ^ 和 >>> 操作符 说明一下: 都是二进制运算符
+     * ^ :
+     */
+    void show1() {
+        System.out.println("-------------------展示 HashMap 计算 hash 值的方式------------------");
+        Map<String, String> hashMap = new HashMap<>();
+        hashMap.put("a", "1");
+        System.out.println(hashMap.hashCode());
+    }
+
+    /**
+     * 展示 HashTable 计算 hash 值的方式
+     * <p>
+     * 直接使用对象的 hashCode，hashCode 是 JDK 根据对象的地址或者字符串或者数字计算出来的 int 类型的数值，然后再使用保留余数获取最终的位置
+     */
+    void show2() {
+        System.out.println("-------------------展示 HashTable 计算 hash 值的方式------------------");
+    }
+
+    /**
+     * 展示 HashMap 的 hashCode 方法实现原理 {@link HashMap#hashCode()}
+     */
+    void show3() {
+
+    }
+
+    public static void main(String[] args) {
+        JavaContainerDemo4_4 demo4_4 = new JavaContainerDemo4_4();
+        demo4_4.show1();
+        demo4_4.show2();
     }
 }
