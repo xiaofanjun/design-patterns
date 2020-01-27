@@ -126,12 +126,11 @@ class JavaContainerDemo4_4 {
      * return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
      * 可以看出 当key为null时，hash = 0 ;
      * 否则 hash = (h = key.hashCode()) ^ (h >>> 16);
-     * 这里对 ^ 和 >>> 操作符 说明一下: 都是二进制运算符
-     * ^ :
+     * 这里对 ^ {@link common.JavaOperator#show3(int, int)}和 >>> {@link common.JavaOperator#show7(int)} 操作符 说明一下: 都是二进制运算符
      */
     void show1() {
         System.out.println("-------------------展示 HashMap 计算 hash 值的方式------------------");
-        Map<String, String> hashMap = new HashMap<>();
+        Map<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("a", "1");
         System.out.println(hashMap.hashCode());
     }
