@@ -2,6 +2,7 @@ package javabasic;
 
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@code JavaContainerDemo} Java 容器模块
@@ -47,6 +48,23 @@ import java.util.*;
  * 计算hash值不一样: {@link JavaContainerDemo4_4}<br/>
  * HashMap :  为了得到元素的位置，首先需要根据元素的key计算出一个 hash 值，然后再用这个 hash 值来计算得到最终位置 {@link JavaContainerDemo4_4#show1()}<br/>
  * HashTable: 直接使用对象的 hashCode，hashCode 是 JDK 根据对象的地址或者字符串或者数字计算出来的 int 类型的数值，然后再使用保留余数获取最终的位置.{@link JavaContainerDemo4_4#show2()}<br/>
+ * <p>
+ * <p>
+ * 5：HashMap ,HashTable,TreeMap ,ConcurrentHashMap 各自特点 ? {@link JavaContainerDemo_5}<br/>
+ * 相同点: <br/>
+ * 都是 Map 接口的实现类 ; 因此都 有 put(key,value),get(key) 的操作 <br/>
+ * HashMap ：<br/>
+ * (1) ：支持 key-value , null-null , key-null, null-value 四种形式 <br/>
+ * (2) ：线程不安全 <br/>
+ * (3) ：默认初始容量为16（1<<4）扩容方式为原来的2倍 <br/>
+ * (4) : 底层数据结构 : jdk1.8(数组 + 链表，当链表长度超过8时，链表转换为红黑树) ;
+ * ConcurrentHashMap : <br/>
+ * (1) : 只支持 key-value （(key == null || value == null) , 将抛出NullPinterException)
+ * (2) ：线程安全 (分段锁)<br/>
+ * (3) :
+ * <p>
+ * <p>
+ * 6：
  */
 public class JavaContainerDemo {
 }
@@ -155,5 +173,32 @@ class JavaContainerDemo4_4 {
         JavaContainerDemo4_4 demo4_4 = new JavaContainerDemo4_4();
         demo4_4.show1();
         demo4_4.show2();
+    }
+}
+
+class JavaContainerDemo_5 {
+
+    public static void main(String[] args) {
+        Map hashMap = new HashMap();
+        hashMap.put("a", "1");
+        System.out.println(hashMap.get("a"));
+    }
+
+}
+
+class NativeDemo {
+
+    public static void main(String[] args) {
+        Map hashMap = new HashMap();
+        // char[] c = {'a', 'x', 'e', 'd', 'c', 'f', 'g', 'h', 'y', 'g', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'b', 'y', 'z'};
+        /*for (int i = 0; i < 20; i++) {
+            int n = i + 1;
+            hashMap.put(c[i], n);
+        }*/
+        //todo 模拟 key 的hashcode 相同的场景
+        hashMap.put("Ab", "1");
+        hashMap.put("BC", "2");
+        //todo 发生碰撞是如何处理的，模拟 转换成红黑树的场景
+        System.out.println(hashMap.get("Ab") + "---" + hashMap.get("BC"));
     }
 }

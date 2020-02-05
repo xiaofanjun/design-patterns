@@ -25,6 +25,7 @@ import java.io.InputStream;
  * 不对，两个对象的hashCode（）相同，equals（） 不一定为true;
  * 原因： 以String对象为列 其hashCode值的计算公式为： s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1] , s[] 为String对象的char数组<br/>
  * 所以可以得出，如果两个对象的值一样，那么得到的hashCode值是一样的，也就是 equals 为 true ，hashCode 为true;
+ * <b>注意：Object对象的hashcode() 返回的是对象的内存地址，所以也需要看你自定义的类自己实现的hashcode方式是怎样的</b>
  * <b>总结： 两个对象 equals() 相同，hashCode()相同; hashCode()相同，equals() 不一定相同 {@link JavaBasicDemo3#show1()}</b>
  * <p>
  * <p>

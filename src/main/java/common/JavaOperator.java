@@ -13,14 +13,22 @@ package common;
  * <p>
  * 1: 二进制操作符: {@link JavaOperator}<br/>
  * (1)、 &(与) :       只有两个位上面都是 1 才是 1，其他为 0  <===> 只有 1 + 1 = 1 , 其他为 0;{@link JavaOperator#show1(int, int)}<br/>
+ * 特点：得到的结果的 max = 两个数中的最小值  比如 18 & 4  得到的值得肯定是  < = 4 的；所以当需要把值控制在某个范围内时，可以使用该操作符
+ * <p>
  * (2)、或(|) :       只要为上有一个 1 就为 1               <===> 只有 0 + 0 = 0 , 其他为 1;{@link JavaOperator#show2(int, int)}<br/>
+ * <p>
  * (3)、 异或(^):      只有两位数不同时才为 1                <===> 只有 0 + 0 或 1 + 1 等于 0 , 其他为 1; {@link JavaOperator#show3(int, int)}<br/>
+ * 特点: （1）与1相∧,使特定位翻转 ; （2）与0相∧,保留原值 ; (3) 交换两个值，不用临时变量 <br/>
+ * <p>
  * (4)、 取反(~):      全部为1的变为 0，为 0 的为 1; {@link JavaOperator#show4()}<br/>
+ * <p>
  * (5)、 向左移位(<<):  比如 5(101) << 1 , 5向左移动一位， 也就是 101(二进制) 整体向左移动一位，然后补 1 个 0; <br/>
  * 也就是 1010（10）<===> 5*2的一次幂 = m*2的n次幂 {@link JavaOperator#show5(int)}; <br/>
+ * <p>
  * (6)、 向右移位(>>): 如果该数(要移动的数)为正，则高位补0，若为负数，则高位补1;<br/>
  * &nbsp;比如 5(101) >> 1 , 5向右移动一位， 也就是 101(二进制) 整体向右移动一位，然后砍 1 位数; <br/>
  * 也就是 10 (2)   <===>  5/2的一次幂 = m/2的n次幂(取整数) {@link JavaOperator#show6()}; <br/>
+ * <p>
  * (7)、 无符号右移(>>>): 和 >> 类似，只不过 >>> 会直接去掉移动的位数 ; {@link JavaOperator#show7(int)}<br/>
  */
 public class JavaOperator {
@@ -51,7 +59,14 @@ public class JavaOperator {
      */
     void show3(int m1, int m2) {
         System.out.println("------------展示 异或(^) 操作符用法--------------");
-        System.out.println(m1 ^ m2); //1001 值为9
+        System.out.println(0010110 ^ 0011111); // 0001001; 和 1 进行异或 特定值翻转
+        System.out.println(0010110 ^ 0000000); // 0010110; 和 0 进行异或 得到原值
+        System.out.println("------------展示 异或(^) 操作符用法---交换两个值不用临时变量--------------");
+        int a = 3, b = 4;
+        a = a ^ b;
+        b = b ^ a;
+        a = a ^ b;
+        System.out.println("a = " + a + ",b = " + b);
     }
 
     /**
