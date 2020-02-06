@@ -2,7 +2,6 @@ package javabasic;
 
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@code JavaContainerDemo} Java 容器模块
@@ -61,10 +60,30 @@ import java.util.concurrent.ConcurrentHashMap;
  * ConcurrentHashMap : <br/>
  * (1) : 只支持 key-value （(key == null || value == null) , 将抛出NullPinterException)
  * (2) ：线程安全 (分段锁)<br/>
- * (3) :
+ * (3) :数组+链表+红黑树
+ * HashTable:<br/>
+ * (1) : 只支持 key-value
+ * (2) : 线程安全
+ * (3) : 数组+链表
+ * TreeMap:
+ * (1) :  只支持key-value 形式
+ * (2) ：线程非安全
+ * (3) ：红黑二叉树
  * <p>
  * <p>
- * 6：
+ * 6：HashSet 底层实现原理 ? <br/>
+ * HashSet 是基于 HashMap 实现的，HashSet 底层使用 HashMap 来保存所有元素，因此 HashSet 的实现比较简单，相关 HashSet 的操作，<br/>
+ * 基本上都是直接调用底层 HashMap 的相关方法来完成，HashSet 不允许重复的值。
+ * 总结： HashSet 实现了Set相关接口，但是底层使用的HashMap来做事的，所以才会带个hash的名字。
+ * <p>
+ * <p>
+ * 7：ArrayList 和 LinkedList 的区别是什么 ? <br/>
+ * (1): 数据结构: ArrayList : 数组；LinkedList ： 双向链表
+ * 因此在频繁读取数据时用ArrayList； 在写数据时用LinkedList;
+ * <p>
+ * <p>
+ * 8：迭代器使用 {@link JavaContainerDemo_8}
+ * 9：怎么确保一个集合不能被修改？{@link JavaContainerDemo_9}
  */
 public class JavaContainerDemo {
 }
@@ -95,7 +114,6 @@ class JavaContainerDemo3 {
         hashMap.put("c", "3");
         hashMap.put("b", "2");
         System.out.println("HashMap = " + hashMap);
-
     }
 
     /**
@@ -184,6 +202,54 @@ class JavaContainerDemo_5 {
         System.out.println(hashMap.get("a"));
     }
 
+}
+
+/**
+ * @Author ZQ
+ * @Description: 迭代器使用
+ * @Date 2020/2/6 13:43
+ **/
+class JavaContainerDemo_8 {
+    /**
+     * @return void
+     * @Author ZQ
+     * @Description 输出：
+     * 张三
+     * 李四
+     * 王五
+     * <p>
+     * 特点：在两个线程同时操作该list的时可以保证线程安全
+     * @Date 2020/2/6 13:46
+     * @Param [args]
+     **/
+    public static void main(String[] args) {
+        List list = new ArrayList();
+        list.add("张三");
+        list.add("李四");
+        list.add("王五");
+        Iterator<String> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            String name = iterator.next();
+            System.out.println(name);
+        }
+    }
+}
+
+class JavaContainerDemo_9 {
+    /**
+     * @return void
+     * @Author ZQ
+     * @Description 报错信息： UnsupportedOperationException
+     * @Date 2020/2/6 13:54
+     * @Param [args]
+     **/
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        list.add("xfj");
+        Collection<String> clist = Collections.unmodifiableCollection(list);
+        clist.add("zq");//运行到这报错，因为已经加载成不可被修改了
+        System.out.println(list.size());
+    }
 }
 
 class NativeDemo {
